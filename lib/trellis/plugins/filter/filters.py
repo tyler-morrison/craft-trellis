@@ -2,6 +2,7 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
+from trellis import tldextract
 import types
 
 from ansible import errors
@@ -29,7 +30,8 @@ def reverse_www(hosts, enabled=True, append=True):
         if host.startswith('www.'):
             return host[4:]
         else:
-            if len(host.split('.')) > 2:
+            subdomain = tldextract.extract(host).subdomain
+            if subdomain != '' and subdomain != 'www':
                 return host
             else:
                 return 'www.{0}'.format(host)
