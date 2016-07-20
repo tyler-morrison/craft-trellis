@@ -17,15 +17,15 @@ ENV['ANSIBLE_LIBRARY'] = "/usr/share/ansible:#{File.join(ANSIBLE_PATH, 'lib/trel
 ENV['ANSIBLE_ROLES_PATH'] = File.join(ANSIBLE_PATH, 'vendor', 'roles')
 ENV['ANSIBLE_VARS_PLUGINS'] = "~/.ansible/plugins/vars_plugins/:/usr/share/ansible_plugins/vars_plugins:#{File.join(ANSIBLE_PATH, 'lib/trellis/plugins/vars')}"
 
-config_file = File.join(ANSIBLE_PATH, 'group_vars', 'development', 'wordpress_sites.yml')
+config_file = File.join(ANSIBLE_PATH, 'group_vars', 'development', 'craft_sites.yml')
 
 def fail_with_message(msg)
   fail Vagrant::Errors::VagrantError.new, msg
 end
 
 if File.exists?(config_file)
-  wordpress_sites = YAML.load_file(config_file)['wordpress_sites']
-  fail_with_message "No sites found in #{config_file}." if wordpress_sites.to_h.empty?
+  craft_sites = YAML.load_file(config_file)['craft_sites']
+  fail_with_message "No sites found in #{config_file}." if craft_sites.to_h.empty?
 else
   fail_with_message "#{config_file} was not found. Please set `ANSIBLE_PATH` in your Vagrantfile."
 end
@@ -49,7 +49,7 @@ Vagrant.configure('2') do |config|
   # Required for NFS to work
   config.vm.network :private_network, ip: ip, hostsupdater: 'skip'
 
-  hostname, *aliases = wordpress_sites.flat_map { |(_name, site)| site['site_hosts'] }
+  hostname, *aliases = craft_sites.flat_map { |(_name, site)| site['site_hosts'] }
   config.vm.hostname = hostname
   www_aliases = ["www.#{hostname}"] + aliases.map { |host| "www.#{host}" }
 
@@ -62,7 +62,7 @@ Vagrant.configure('2') do |config|
   end
 
   if Vagrant::Util::Platform.windows? and !Vagrant.has_plugin? 'vagrant-winnfsd'
-    wordpress_sites.each_pair do |name, site|
+    craft_sites.each_pair do |name, site|
       config.vm.synced_folder local_site_path(site), remote_site_path(name, site), owner: 'vagrant', group: 'www-data', mount_options: ['dmode=776', 'fmode=775']
     end
     config.vm.synced_folder File.join(ANSIBLE_PATH, 'hosts'), File.join(ANSIBLE_PATH.sub(__dir__, '/vagrant'), 'hosts'), mount_options: ['dmode=755', 'fmode=644']
@@ -70,7 +70,7 @@ Vagrant.configure('2') do |config|
     if !Vagrant.has_plugin? 'vagrant-bindfs'
       fail_with_message "vagrant-bindfs missing, please install the plugin with this command:\nvagrant plugin install vagrant-bindfs"
     else
-      wordpress_sites.each_pair do |name, site|
+      craft_sites.each_pair do |name, site|
         config.vm.synced_folder local_site_path(site), nfs_path(name), type: 'nfs'
         config.bindfs.bind_folder nfs_path(name), remote_site_path(name, site), u: 'vagrant', g: 'www-data', o: 'nonempty'
       end
@@ -140,9 +140,9 @@ end
 
 def post_up_message
   msg = 'Your Trellis Vagrant box is ready to use!'
-  msg << "\n* Composer and WP-CLI commands need to be run on the virtual machine."
+  msg << "\n* Composer and Craft-CLI commands need to be run on the virtual machine."
   msg << "\n* You can SSH into the machine with `vagrant ssh`."
-  msg << "\n* Then navigate to your WordPress sites at `/srv/www`."
+  msg << "\n* Then navigate to your Craft sites at `/srv/www`."
 
   msg
 end

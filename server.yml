@@ -9,7 +9,7 @@
   roles:
     - { role: remote-user, tags: [remote-user, always] }
 
-- name: WordPress Server - Install LEMP Stack with PHP 7.0 and MariaDB MySQL
+- name: Craft Server - Install LEMP Stack with PHP 7.0 and MariaDB MySQL
   hosts: web:&{{ env }}
   become: yes
   roles:
@@ -27,6 +27,6 @@
     - { role: nginx, tags: [nginx] }
     - { role: logrotate, tags: [logrotate] }
     - { role: composer, tags: [composer] }
-    - { role: wp-cli, tags: [wp-cli] }
+    - { role: craft-cli, tags: [craft-cli] }
     - { role: letsencrypt, tags: [letsencrypt], when: letsencrypt_enabled }
-    - { role: wordpress-setup, tags: [wordpress, wordpress-setup, letsencrypt] }
+    - { role: craft-setup, tags: [craft, craft-setup, letsencrypt] }
