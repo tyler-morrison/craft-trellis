@@ -48,9 +48,9 @@ example.com/            # → Root folder for the project
       ├── public/       # → Web root for the website
       │     ├── assets/ # → Upload folder for all Craft assets  
       │     └── dist/   # → Production ready CSS, JS, etc.
-      ├── src/          # → Contains source files – Sass, uncompiled JS, etc.
       ├── storage/      # → Where Craft stores a bunch of files that get dynamically saved during use.
       └── templates/    # → Template parts
+            └── src/    # → Contains source files – Sass, uncompiled JS, etc.
 ```
 
 
