@@ -8,7 +8,7 @@ from subprocess import CalledProcessError, check_output, STDOUT
 
 certs_dir = '{{ letsencrypt_certs_dir }}'
 failed = False
-sites = {{ wordpress_sites }}
+sites = {{ craft_sites }}
 sites = (k for k, v in sites.items() if 'ssl' in v and v['ssl'].get('enabled', False) and v['ssl'].get('provider', 'manual') == 'letsencrypt')
 
 for site in sites:

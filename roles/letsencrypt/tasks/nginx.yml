@@ -3,7 +3,7 @@
     path: "{{ nginx_path }}/sites-enabled/{{ item.key }}.conf"
   register: nginx_confs
   when: site_uses_letsencrypt
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
 
 - name: Create Nginx conf for challenges location
   template:
@@ -41,7 +41,7 @@
   register: letsencrypt_test_challenges
   ignore_errors: true
   when: site_uses_letsencrypt
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
 
 - name: Notify of challenge failures
   fail:

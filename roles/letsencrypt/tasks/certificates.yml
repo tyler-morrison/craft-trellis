@@ -3,7 +3,7 @@
   args:
     creates: "{{ letsencrypt_keys_dir }}/{{ item.key }}.key"
   when: site_uses_letsencrypt
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   tags: [letsencrypt_keys]
 
 - name: Ensure correct permissions on private keys
@@ -11,7 +11,7 @@
     path: "{{ letsencrypt_keys_dir }}/{{ item.key }}.key"
     mode: 0600
   when: site_uses_letsencrypt
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   tags: [letsencrypt_keys]
 
 - name: Generate CSRs for single domain keys
@@ -19,7 +19,7 @@
   args:
     creates: "{{ acme_tiny_data_directory }}/csrs/{{ item.key }}.csr"
   when: site_uses_letsencrypt and item.value.site_hosts | length == 1 and not item.value.www_redirect | default(true)
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   tags: [letsencrypt_keys]
 
 - name: Generate CSRs for multiple domain keys
@@ -28,7 +28,7 @@
     executable: /bin/bash
     creates: "{{ acme_tiny_data_directory }}/csrs/{{ item.key }}.csr"
   when: site_uses_letsencrypt and item.value.www_redirect | default(true)
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   tags: [letsencrypt_keys]
 
 - name: Generate the initial certificate
@@ -43,6 +43,6 @@
   file:
     path: "{{ nginx_path }}/sites-enabled/letsencrypt-{{ item.key }}.conf"
     state: absent
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   when: sites_need_confs
   notify: reload nginx
