@@ -6,7 +6,7 @@
     login_host: "{{ site_env.db_host }}"
     login_user: "{{ mysql_root_user }}"
     login_password: "{{ mysql_root_password }}"
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   when: site_uses_local_db and item.value.db_create | default(True)
 
 - name: Create/assign database user to db and grant permissions
@@ -19,14 +19,14 @@
     login_host: "{{ site_env.db_host }}"
     login_user: "{{ mysql_root_user }}"
     login_password: "{{ mysql_root_password }}"
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   when: site_uses_local_db and item.value.db_create | default(True)
 
 - name: Copy database dump
   copy:
     src: "{{ item.value.db_import }}"
     dest: /tmp
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   when: item.value.db_import | default(False)
 
 - name: Import database
@@ -37,6 +37,6 @@
     login_host: "{{ site_env.db_host }}"
     login_user: "{{ site_env.db_user }}"
     login_password: "{{ site_env.db_password }}"
-  with_dict: "{{ wordpress_sites }}"
+  with_dict: "{{ craft_sites }}"
   when: item.value.db_import | default(False)
   notify: reload nginx
