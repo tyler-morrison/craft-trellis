@@ -1,3 +1,4 @@
+## TODO: Check if shared path is needed
 ---
 - include: "{{ deploy_share_before | default('../hooks/example.yml') }}"
   tags: deploy-share-before
