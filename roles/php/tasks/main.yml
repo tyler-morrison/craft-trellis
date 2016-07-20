@@ -1,3 +1,4 @@
+# TODO: Check which extensions can be removed.
 ---
 - name: Add PHP 7.0 PPA
   apt_repository:
@@ -12,14 +13,23 @@
   with_items:
   - php7.0-cli
   - php7.0-common
-  - php7.0-curl
+  - php7.0-curl # Req
   - php7.0-dev
-  - php7.0-fpm
-  - php7.0-gd
-  - php7.0-mbstring
-  - php7.0-mcrypt
+  - php7.0-dom # Req
+  - php7.0-fpm # Req
+  - php7.0-gd # Req
+  - php7.0-iconv # Req
+  - php7.0-json # Req
+  - php7.0-mbstring # Req
+  - php7.0-mcrypt # Req
   - php7.0-mysql
   - php7.0-opcache
+  - php7.0-openssl # Req
+  - php7.0-pcre # Req
+  - php7.0-pdo # Req
+  - php7.0-pdo_mysql # Req
+  - php7.0-reflection # Req
+  - php7.0-spl # Req
   - php7.0-xml
   - php7.0-xmlrpc
   - php7.0-zip
@@ -63,5 +73,5 @@
 - name: php-fpm configuration file
   template:
     src: php-fpm.conf.j2
-    dest: /etc/php/7.0/fpm/pool.d/wordpress.conf
+    dest: /etc/php/7.0/fpm/pool.d/craft.conf
   notify: reload php-fpm
