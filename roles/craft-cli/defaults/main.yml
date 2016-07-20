@@ -1,0 +1,2 @@
+craft_cli_bin_path: /usr/bin/craft
+craft_cli_phar_url: "https://github.com/rsanchez/craft-cli/releases/download/0.6.2/craft.phar"

@@ -1,0 +1,6 @@
+---
+- name: Install Craft-CLI
+  get_url:
+    url: "{{ craft_cli_phar_url }}"
+    dest: "{{ craft_cli_bin_path }}"
+    mode: 0755
