@@ -13,5 +13,6 @@ craft_env_defaults:
   db_user: "{{ item.key | underscore }}"
   craft_env: "{{ env }}"
   craft_home: "{{ item.value.ssl.enabled | default(false) | ternary('https', 'http') }}://${HTTP_HOST}"
+  craft_cp: admin # custom path to administrator dashboard
 
 site_env: "{{ craft_env_defaults | combine(item.value.env | default({}), vault_craft_sites[item.key].env) }}"

@@ -9,8 +9,6 @@ craft_sites:
     repo: git@github.com:example/example.com.git # replace with your Git repo URL
     repo_subtree_path: site # relative path to your Craft directory in your repo
     branch: master
-    multisite:
-      enabled: false
     ssl:
       enabled: false
       provider: letsencrypt
