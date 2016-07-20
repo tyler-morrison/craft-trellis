@@ -1,16 +1,14 @@
-# Trellis
+# Craft Trellis
 
-[![Build Status](https://travis-ci.org/roots/trellis.svg)](https://travis-ci.org/roots/trellis)
-
-Ansible playbooks for setting up a LEMP stack for WordPress.
+Heavily sourced from [Roots Trellis](https://roots.io/trellis). If you have any WordPress needs, I can’t recommend the Roots team highly enough.
 
 - Local development environment with Vagrant
 - High-performance production servers
-- One-command deploys for your [Bedrock](https://roots.io/bedrock/)-based WordPress sites
+- One-command deploys
 
 ## What's included
 
-Trellis will configure a server with the following and more:
+Craft Trellis will configure a server with the following and more:
 
 * Ubuntu 14.04 Trusty LTS
 * Nginx (with optional FastCGI micro-caching)
@@ -20,7 +18,6 @@ Trellis will configure a server with the following and more:
 * Let's Encrypt integration for free SSL certificates
 * HTTP/2 support (requires SSL)
 * Composer
-* WP-CLI
 * sSMTP (mail delivery)
 * MailHog
 * Memcached
@@ -39,67 +36,46 @@ Make sure all dependencies have been installed before moving on:
 
 ## Installation
 
-The recommended directory structure for a Trellis project looks like:
+The recommended directory structure for a Craft Trellis project looks like:
 
 ```shell
-example.com/      # → Root folder for the project
-├── trellis/      # → Your clone of this repository
-└── site/         # → A Bedrock-based WordPress site
-    └── web/
-        ├── app/  # → WordPress content directory (themes, plugins, etc.)
-        └── wp/   # → WordPress core (don't touch!)
+example.com/            # → Root folder for the project
+├── ansible/            # → Playbooks that automate server setup & deploy
+├── app/                # → Craft CMS core (don’t touch!)
+└── site/               # → A Craft CMS site (feel free to rename on multisite setups)
+      ├── config/
+      ├── plugins/
+      ├── public/       # → Web root for the website
+      │     ├── assets/ # → Upload folder for all Craft assets  
+      │     └── dist/   # → Production ready CSS, JS, etc.
+      ├── src/          # → Contains source files – Sass, uncompiled JS, etc.
+      ├── storage/      # → Where Craft stores a bunch of files that get dynamically saved during use.
+      └── templates/    # → Template parts
 ```
 
-See a complete working example in the [roots-example-project.com repo](https://github.com/roots/roots-example-project.com).
 
 1. Create a new project directory: `$ mkdir example.com && cd example.com`
-2. Clone Trellis: `$ git clone --depth=1 git@github.com:roots/trellis.git && rm -rf trellis/.git`
-3. Clone Bedrock: `$ git clone --depth=1 git@github.com:roots/bedrock.git site && rm -rf site/.git`
-4. Install the Ansible Galaxy roles: `$ cd trellis && ansible-galaxy install -r requirements.yml`
-
-Windows user? [Read the Windows docs](https://roots.io/trellis/docs/windows/) for slightly different installation instructions. VirtualBox is known to have poor performance in Windows — use VMware or [see some possible solutions](https://discourse.roots.io/t/virtualbox-performance-in-windows/3932).
-
-## Documentation
-
-Trellis documentation is available at [https://roots.io/trellis/docs/](https://roots.io/trellis/docs/).
+2. Clone Craft Trellis: `$ git clone --depth=1 git@github.com:tyler-morrison/craft-trellis.git ansible && rm -rf ansible/.git`
+3. Clone Bedrock: `$ git clone --depth=1 git@github.com:tyler-morrison/craft-bedrock.git site && rm -rf site/.git`
+4. Install the Ansible Galaxy roles: `$ cd ansible && ansible-galaxy install -r requirements.yml`
 
 ## Local development setup
 
-1. Configure your WordPress sites in `group_vars/development/wordpress_sites.yml` and in `group_vars/development/vault.yml`
+1. Configure your Craft sites in `group_vars/development/craft_sites.yml` and in `group_vars/development/vault.yml`
 2. Run `vagrant up`
-
-[Read the local development docs](https://roots.io/trellis/docs/local-development-setup/) for more information.
 
 ## Remote server setup (staging/production)
 
 A base Ubuntu 14.04 server is required for setting up remote servers.
 
-1. Configure your WordPress sites in `group_vars/<environment>/wordpress_sites.yml` and in `group_vars/<environment>/vault.yml` (see the [Vault docs](https://roots.io/trellis/docs/vault/) for how to encrypt files containing passwords)
+1. Configure your Craft sites in `group_vars/<environment>/craft_sites.yml` and in `group_vars/<environment>/vault.yml`
 2. Add your server IP/hostnames to `hosts/<environment>`
-3. Specify public SSH keys for `users` in `group_vars/all/users.yml` (see the [SSH Keys docs](https://roots.io/trellis/docs/ssh-keys/))
+3. Specify public SSH keys for `users` in `group_vars/all/users.yml`
 4. Run `ansible-playbook server.yml -e env=<environment>` to provision the server
-
-[Read the remote server docs](https://roots.io/trellis/docs/remote-server-setup/) for more information.
 
 ## Deploying to remote servers
 
-1. Add the `repo` (Git URL) of your Bedrock WordPress project in the corresponding `group_vars/<environment>/wordpress_sites.yml` file
+1. Add the `repo` (Git URL) of your Bedrock Craft project in the corresponding `group_vars/<environment>/craft_sites.yml` file
 2. Set the `branch` you want to deploy
 3. Run `./deploy.sh <environment> <site name>`
 4. To rollback a deploy, run `ansible-playbook rollback.yml -e "site=<site name> env=<environment>"`
-
-[Read the deploys docs](https://roots.io/trellis/docs/deploys/) for more information.
-
-## Contributing
-
-Contributions are welcome from everyone. We have [contributing guidelines](https://github.com/roots/guidelines/blob/master/CONTRIBUTING.md) to help you get started.
-
-## Community
-
-Keep track of development and community news.
-
-* Participate on the [Roots Discourse](https://discourse.roots.io/)
-* Follow [@rootswp on Twitter](https://twitter.com/rootswp)
-* Read and subscribe to the [Roots Blog](https://roots.io/blog/)
-* Subscribe to the [Roots Newsletter](https://roots.io/subscribe/)
-* Listen to the [Roots Radio podcast](https://roots.io/podcast/)
