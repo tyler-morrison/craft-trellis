@@ -1,6 +1,6 @@
 # Documentation: https://galaxy.ansible.com/list#/roles/1117
 logrotate_scripts:
-  - name: wordpress-sites
+  - name: craft-sites
     path: "{{ www_root }}/**/logs/*.log"
     options:
       - weekly
