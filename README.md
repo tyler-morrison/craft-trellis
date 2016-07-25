@@ -42,7 +42,7 @@ The recommended directory structure for a Craft Trellis project looks like:
 example.com/            # → Root folder for the project
 ├── ansible/            # → Playbooks that automate server setup & deploy
 ├── app/                # → Craft CMS core (don’t touch!)
-└── site/               # → A Craft CMS site (feel free to rename on multisite setups)
+└── site/               # → A Craft CMS site
       ├── config/
       ├── plugins/
       ├── public/       # → Web root for the website
