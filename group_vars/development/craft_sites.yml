@@ -6,6 +6,7 @@ craft_sites:
     site_hosts:
       - example.dev
     local_path: ../site # path targeting local Bedrock site directory (relative to Ansible root)
+    admin_username: admin
     admin_email: admin@example.dev
     ssl:
       enabled: false

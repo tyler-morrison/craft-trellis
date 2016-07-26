@@ -1,8 +1,8 @@
 # Documentation: https://roots.io/trellis/docs/vault/
 vault_mysql_root_password: devpw
 
-# Variables to accompany `group_vars/development/craft_sites.yml`
-# Note: the site name (`example.com`) must match up with the site name in the above file.
+# Variables to accompany `group_vars/development/craft_sits.yml`
+# NOTE: The site name (`example.com`) must match the site name in the above file
 vault_craft_sites:
   example.com:
     admin_password: admin
